@@ -1,0 +1,37 @@
+import mongoose from "mongoose";
+
+interface IUser {
+  _id: mongoose.Types.ObjectId; //in monog id is created _id automatically
+  name: string;
+  email: string;
+  password: string;
+  mobile?: string;
+  role: "user" | "deliveryBoy" | "admin";
+}
+const userSchema = new mongoose.Schema<IUser>(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      uniqe: true,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    mobile: {
+      type: String,
+      required: false,
+    },
+    role: {
+      type: String,
+      enum: ["user", "delvieryBoy", "admin"],
+      default: "user",
+    },
+  },
+  { timestamps: true },
+);
