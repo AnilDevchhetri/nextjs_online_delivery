@@ -1,5 +1,5 @@
 'use client'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Leaf } from 'lucide-react'
 import { motion } from 'motion/react';
 
 type PropType = {
@@ -27,6 +27,10 @@ function RegisterForm({ previousStep }: PropType) {
                 className='text-4xl font-extrabold text-green-700 mb-2'>
                 Register Account
             </motion.h1>
+            <p className='flex text-grey-600 items-center '>Join Today <Leaf className='w-5 h-5 text-green-700' /></p>
+            <motion.form className='flex flex-col gap-5 w-full max-w-sm'>
+
+            </motion.form>
         </div>
     )
 }
