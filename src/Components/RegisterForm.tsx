@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 import googleImage from '@/assets/google.png'
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 type PropType = {
     previousStep: (s: number) => void;
@@ -16,6 +17,7 @@ function RegisterForm({ previousStep }: PropType) {
     const [password, setPassword] = useState("");
     const [passwordType, setPasswordType] = useState("password");
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         if (loading) return;
@@ -109,7 +111,7 @@ function RegisterForm({ previousStep }: PropType) {
                     Sign With Google
                 </button>
             </motion.form>
-            <p className='text-gray-600 mt-6 text-sm flex items-center gap-1 cursor-pointer'>Already have an account ? <LogIn className='w-4 h-4' /><span className='text-green-600'> Sign in</span></p>
+            <p className='text-gray-600 mt-6 text-sm flex items-center gap-1 cursor-pointer' onClick={() => router.push('/login')}>Already have an account ? <LogIn className='w-4 h-4' /><span className='text-green-600'> Sign in</span></p>
         </div>
     )
 }
