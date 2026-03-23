@@ -4,6 +4,7 @@ import connectDb from "./lib/db";
 import User from "./models/user.model";
 
 import bcrypt from "bcryptjs";
+import Google from "next-auth/providers/google";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -40,8 +41,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       },
     }),
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
   callbacks: {
+    // trigger when comming from google
+
+    async signIn({ user, account }) {
+      if (account?.provider == "google") {
+        await connectDb();
+      }
+      return user;
+    },
+
     //token is genrated by nextauth after signIn
     //user is what authorize return
     jwt({ token, user }) {
