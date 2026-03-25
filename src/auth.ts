@@ -21,12 +21,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const user = await User.findOne({ email });
 
           if (!user) {
-            throw new Error("user does not exits");
+            //throw new Error("user does not exits");
+            return null;
           }
 
           const isMatch = await bcrypt.compare(password, user.password);
           if (!isMatch) {
-            throw new Error("Passwrod is incorrect");
+            // throw new Error("Passwrod is incorrect");
+            return null;
           }
 
           //return user
@@ -37,7 +39,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             role: user.role,
           };
         } catch (error) {
-          throw new Error(`login error: ${error}`);
+          return null;
+          // throw new Error(`login error: ${error}`);
         }
       },
     }),
@@ -48,7 +51,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     // trigger when comming from google
-
     async signIn({ user, account }) {
       if (account?.provider == "google") {
         await connectDb();

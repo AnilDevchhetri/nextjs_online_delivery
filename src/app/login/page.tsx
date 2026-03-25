@@ -22,14 +22,22 @@ function Login() {
     console.log(session)
     const handleLogin = async (e: FormEvent) => {
         e.preventDefault();
+
+
         if (loading) { return; }
         setLoading(true);
         try {
             const result = await signIn("credentials", {
-                email, password
+                email, password, redirect: false, callbackUrl: "/",
             });
-            console.log(result);
+            if (result?.ok) {
+                router.push(result.url || "/");
+            }
+
+            console.log("result is ", result);
+
             setLoading(false)
+
         } catch (error) {
             console.log(error);
             setLoading(false)
@@ -102,10 +110,10 @@ function Login() {
                     <span className='flex-1 h-px bg-gray-200'></span>
                 </div>
 
-                <button className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200 cursor-pointer' onClick={() => signIn("google")}>
+                <div className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200 cursor-pointer' onClick={() => signIn("google", { callbackUrl: "/" })}>
                     <Image src={googleImage} width={20} height={20} alt="google image" />
                     Sign With Google
-                </button>
+                </div>
             </motion.form>
             <p className='text-gray-600 mt-6 text-sm flex items-center gap-1 cursor-pointer' onClick={() => router.push('/register')}>Create New account ? <LogIn className='w-4 h-4' /><span className='text-green-600'> Sign Up</span></p>
         </div>

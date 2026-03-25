@@ -1,6 +1,7 @@
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export function proxy(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const publicRoutes = [
     "/login",
@@ -9,8 +10,20 @@ export function proxy(req: NextRequest) {
     "/favicon.ico",
     "/_next",
   ];
-  console.log("pathname is :", pathname);
+  console.log("pathname is ", pathname);
   if (publicRoutes.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();
   }
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  console.log("token is ", token);
+  if (!token) {
+    const loginUrl = new URL("/login", req.url);
+    loginUrl.searchParams.set("callbackUrl", req.url);
+    console.log("loginUrl is ", loginUrl);
+    return NextResponse.redirect(loginUrl);
+  }
 }
+
+export const config = {
+  matcher: "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+};
