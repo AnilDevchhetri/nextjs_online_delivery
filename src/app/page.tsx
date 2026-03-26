@@ -1,13 +1,29 @@
+import { auth } from "@/auth";
+import EditRoleMobile from "@/Components/EditRoleMobile";
 import connectDb from "@/lib/db";
 import User from "@/models/user.model";
-import Image from "next/image";
+import { redirect } from "next/navigation";
+
 
 export default async function Home() {
   await connectDb();
-  const user = await User.find()
+  //as this is render on server side we dont make it client side
+  //so we use auth which is used in server side
+  const session = await auth();
+  console.log("session is :", session);
+  const user = await User.findById(session?.user?.id);
+
+  if (!user) {
+    redirect("/login");
+  }
+  const inComplete = !user.mobile || !user.role || (!user.mobile && user.role == "user")
+  if (inComplete) {
+    return <EditRoleMobile />
+  }
+
   return (
     <div>hello</div>
   );
 }
 
-//5:30
+//6:00
