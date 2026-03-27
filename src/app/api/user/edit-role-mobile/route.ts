@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     const user = await User.findOneAndUpdate(
       { email: session?.user?.email },
       { role, mobile },
+      { new: true },
     );
     if (!user) {
       return NextResponse.json({ message: "User Not found" }, { status: 400 });

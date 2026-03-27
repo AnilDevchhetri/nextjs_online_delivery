@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+.role-div {
+  flex-direction: row;
+  height: 165px;
+  display: flex;
+  flex-wrap: wrap;
+}

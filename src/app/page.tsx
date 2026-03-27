@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import EditRoleMobile from "@/Components/EditRoleMobile";
+import Nav from "@/Components/Nav";
 import connectDb from "@/lib/db";
 import User from "@/models/user.model";
 import { redirect } from "next/navigation";
@@ -22,7 +23,9 @@ export default async function Home() {
   }
 
   return (
-    <div>hello</div>
+    <>
+      <Nav user={user} />
+    </>
   );
 }
 
